@@ -11,7 +11,9 @@ const port = process.env.PORT || 3000;
 let app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 // app.use(bodyParser.json());
+
 // post todos route
 app.post('/todos', (req, res) => {
     let todo = new Todo({
@@ -49,6 +51,24 @@ app.get('/todos/:id', (req, res) => {
         res.status(404).send()
     });
 });
+
+app.delete('/todos/:id', (req, res) => {
+    let id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(400).send();
+    }
+    Todo.findByIdAndRemove(id).then((todo) => {
+        if (!todo) {
+            return res.status(404).send();
+        }
+        res.send({
+            todo
+        })
+    }).catch((error) => {
+        res.status(404).send(error)
+    });
+})
 
 app.listen(port, () => {
     console.log(`Started at port ${port}`);
