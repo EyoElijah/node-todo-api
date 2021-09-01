@@ -1,3 +1,5 @@
+require('./config/config');
+
 const express = require('express'),
     _ = require('lodash'),
     bodyParser = require('body-parser'),
@@ -7,7 +9,7 @@ let { mongoose } = require('./db/mongoose');
 let { Todo } = require('./models/todo');
 let { User } = require('./models/user');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 let app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -93,6 +95,21 @@ app.patch('/todos/:id', (req, res) => {
         })
     }).catch((error) => {
         res.status(400).send()
+    })
+});
+
+// POST /Users
+
+app.post('/users', (req, res) => {
+    let body = _.pick(req.body, ['email', 'password']);
+    let user = new User(body);
+
+    user.save().then(() => {
+        return user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
     })
 });
 
