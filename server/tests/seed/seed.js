@@ -16,17 +16,23 @@ let user = [{
 }, {
     _id: userTwoId,
     email: 'userTwo@gmail.com',
-    password: 'userTwoPassword'
+    password: 'userTwoPassword',
+    tokens: [{
+        access: 'auth',
+        token: jwt.sign({ _id: userTwoId, access: 'auth' }, 'abc123').toString()
+    }]
 }];
 
 let todo = [{
     _id: new ObjectID(),
-    text: 'First test todo'
+    text: 'First test todo',
+    _creator: userOneId
 }, {
     _id: new ObjectID(),
     text: 'second test todo',
     completed: true,
-    completedAt: 323
+    completedAt: 323,
+    _creator: userTwoId
 }];
 
 
