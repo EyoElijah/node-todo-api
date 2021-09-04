@@ -14,11 +14,11 @@ var password = '123abc!';
 let hashedPassword = "$2a$10$6wwUxZBjyRakatRjVsWeIutwpUQbhWSMxvqe9BfTP9ABit.oNURUO";
 
 bcrypt.compare('password', hashedPassword, (err, result) => {
-        console.log(result);
-    })
-    // let data = {
-    //     id: 10
-    // };
+    console.log(result);
+});
+// let data = {
+//     id: 10
+// };
 
 // let token = jwt.sign(data, '123abc');
 
